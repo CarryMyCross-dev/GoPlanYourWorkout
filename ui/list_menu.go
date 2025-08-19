@@ -14,7 +14,7 @@ func ListMenu() {
 
 	leftContent := container.NewMax()
 
-	labels := []string{"Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"}
+	labels := [7]string{"Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"}
 
 	list := widget.NewList(
 		func() int {
@@ -27,17 +27,15 @@ func ListMenu() {
 			obj.(*widget.Label).SetText(labels[i])
 		},
 	)
+	
+	rightContent := widget.NewLabel("")
 
-	//list.OnSelected = func(id widget.ListItemID) {
-	//	fmt.Println("selected")
-	//}
+	list.OnSelected = func(id widget.ListItemID) {
+		rightContent.SetText(labels[id])
+		rightContent.Refresh()
+	}
 
-	// Put the list where you want it — here I put it on the left
-	//content := container.NewBorder(
-	//	container.NewMax(widget.NewSeparator()), nil, list, nil,
-	//)
-
-	leftWidgets := container.NewHSplit(list, widget.NewEntry())
+	leftWidgets := container.NewHSplit(list, rightContent)
 	leftContent.Add(leftWidgets)
 
 	myWindow.SetContent(leftContent)
